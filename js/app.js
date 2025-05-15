@@ -70,3 +70,42 @@ document.querySelector("ul").addEventListener("change", function (event) {
     }
 });
 //  Suprime les filtres 
+document.querySelector("ul").addEventListener("click", function (event) {
+    if (event.target.closest("button")) {
+        const li = event.target.closest("li");
+        const id = parseInt(li.querySelector("input").id.splip("_")[1]);
+        todos = todos.filter(todo => todo.id !== id);
+        savedTodos();
+        updateDisplay();
+    }
+
+});
+
+// Charger les taches au changement de la page 
+document.addEventListener("DOMContentLoaded", function () {
+    // select tous les button de suppression
+    const deleteButtons = document.querySelectorAll(".btn-danger");
+    // Ajouter un ecouteur d evenement a chaque button de suppression
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", function (event) {
+            event.preventDefault();
+            // Stocke le button de suppression clique
+            const deleteButtons = this;
+            // Affiche le modal de confirmation de suppression 
+            const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+            deleteModal.show();
+            // Gere l evenement de confirmation de suppression 
+            document.getElementById("confirmDelete").addEventListener("click", function () {
+                // Supprimer la tache 
+                deleteButtons.closest(".todo").remove();
+                // Fermer le modal
+                deleteModal.hide();
+
+            });
+
+        });
+
+
+    });
+
+});
